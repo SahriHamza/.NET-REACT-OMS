@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.26-alpha">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>56541bf7-f417-4526-86e2-6d408a5d7a30</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupCommand>set BROWSER=none&amp;&amp;npm start</StartupCommand>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\Components\Clients\" />
+    <Folder Include="src\Components\Warehouses\" />
+    <Folder Include="src\Components\Products\" />
+    <Folder Include="src\Components\Orders\" />
+    <Folder Include="src\Utils\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\Components\" />
+  </ItemGroup>
+</Project>

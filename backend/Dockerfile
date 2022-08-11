@@ -1,0 +1,31 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS base
+WORKDIR /app
+EXPOSE 5087
+EXPOSE 7087
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+
+WORKDIR /src
+COPY ["backend/backend.csproj", "backend/"]
+COPY ["backend/reacted-edily/reacted-edily.esproj", "backend/reacted-edily/"]
+RUN dotnet restore "backend/backend.csproj"
+COPY . .
+WORKDIR "/src/backend"
+RUN dotnet build "backend.csproj" -c Release -o /app/build
+
+
+FROM build AS publish
+RUN dotnet publish "backend.csproj" -c Release -o /app/publish
+
+FROM node AS node-builder
+WORKDIR /src
+COPY ./reacted-edily /src
+RUN npm install
+RUN npm build
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "backend.dll"]
