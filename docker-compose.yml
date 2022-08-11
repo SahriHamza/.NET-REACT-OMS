@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  backend:
+    image: ${DOCKER_REGISTRY-}backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+        - "ConnectionStrings:ClientsContext=Host=db;Database=reactedily;Username=postgres;Password=postgres"
+    ports: 
+        - '5087:5087'
+        - '7087:7087'
+    depends_on:
+        - db
+    networks:
+      - web-api
+
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    volumes: 
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=reactedily
+    ports:
+      - '5432:5432'
+    networks:
+      - web-api
+
+networks:
+  web-api:
+    driver: bridge
+
+volumes:
+  db:
+    driver: local
