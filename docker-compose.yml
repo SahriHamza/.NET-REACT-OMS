@@ -11,6 +11,7 @@ services:
     ports: 
         - '5087:5087'
         - '7087:7087'
+        - '3000:3000'
     depends_on:
         - db
     networks:
